@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.dormforce.nuis.support.dao.TrainAllocationDao">
+  <resultMap id="trainAllocationMap" type="TrainAllocation">
+    <id column="manager_id" jdbcType="INTEGER" property="managerId" />
+    <id column="trainee_id" jdbcType="INTEGER" property="traineeId" />
+  </resultMap>
+
+  <select id="findTrainAllocationsList" resultMap="trainAllocationMap">
+    SELECT * FROM train_allocation
+  </select>
+
+  <select id="findTrainAllocationById" resultMap="trainAllocationMap">
+    SELECT * FROM train_allocation WHERE manager_id = #{managerId} AND trainee_id = #{traineeId}
+  </select>
+
+  <select id="findTrainAllocationByM" resultMap="trainAllocationMap">
+    SELECT * FROM train_allocation WHERE manager_id = #{managerId}
+  </select>
+
+  <select id="findTrainAllocationByT" resultMap="trainAllocationMap">
+    SELECT * FROM train_allocation WHERE trainee_id = #{traineeId}
+  </select>
+
+  <insert id="addTrainAllocation">
+    INSERT INTO train_allocation (manager_id,trainee_id)
+    VALUE (#{managerId},#{traineeId})
+  </insert>
+
+  <delete id="deleteTrainAllocation">
+    DELETE FROM train_allocation WHERE manager_id = #{managerId} AND trainee_id = #{traineeId}
+  </delete>
+</mapper>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.dormforce.nuis.support.dao.LogDao">
+  <resultMap id="logMap" type="Log">
+    <id column="log_id" jdbcType="INTEGER" property="logId" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="info" jdbcType="VARCHAR" property="info" />
+    <result column="actor" jdbcType="VARCHAR" property="actor" />
+    <result column="create_time" jdbcType="BIGINT" property="createTime" />
+    <result column="status" jdbcType="CHAR" property="status" />
+  </resultMap>
+
+  <select id="findLogs" resultMap="logMap">
+    SELECT * FROM log
+  </select>
+
+  <select id="findLogById" resultMap="logMap">
+    SELECT * FROM log WHERE log_id = #{logId}
+  </select>
+
+  <select id="findLogByUser" resultMap="logMap">
+    SELECT * FROM log WHERE actor = #{actor}
+  </select>
+
+  <insert id="addLog">
+    INSERT INTO log (log_id,type,info,actor,create_time,status)
+    VALUE (#{logId},#{type},#{info},#{actor},#{createTime},#{status})
+  </insert>
+
+  <update id="updateLog">
+    UPDATE log SET type = #{type},info = #{info},
+    actor = #{actor},create_time = #{createTime},status = #{status}
+    WHERE log_id = #{logId}
+  </update>
+
+  <delete id="deleteLog">
+    DELETE FROM log WHERE log_id = #{logId}
+  </delete>
+
+</mapper>

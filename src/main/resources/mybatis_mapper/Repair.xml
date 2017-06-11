@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.dormforce.nuis.support.dao.RepairDao">
+  <resultMap id="repairMap" type="Repair">
+    <id column="repair_id" jdbcType="INTEGER" property="repairId" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="subject" jdbcType="VARCHAR" property="subject" />
+    <result column="create_time" jdbcType="BIGINT" property="createTime" />
+    <result column="status" jdbcType="CHAR" property="status" />
+    <result column="transactor" jdbcType="INTEGER" property="transactor" />
+  </resultMap>
+
+  <select id="findRepairs" resultType="Repair" resultMap="repairMap">
+      SELECT * FROM repair
+  </select>
+
+  <select id="findRepairById" resultMap="repairMap">
+      SELECT * FROM repair WHERE repair_id = #{repairId}
+  </select>
+
+  <insert id="addRepair" parameterType="Repair">
+    <selectKey keyProperty="repairId" resultType="int" order="BEFORE">
+      SELECT MAX(repair_Id)+1 FROM repair
+    </selectKey>
+      INSERT INTO repair (repair_id,type,subject,create_time,status,transactor)
+      VALUE (#{repairId},#{type},#{subject},#{createTime},#{status},#{transactor})
+  </insert>
+
+  <update id="updateRepair">
+      UPDATE repair SET type = #{type},subject = #{subject},create_time = #{createTime},
+      status = #{status},transactor = #{transactor} WHERE repair_id = #{repairId}
+  </update>
+
+  <delete id="deleteRepair">
+      DELETE FROM repair WHERE repair_id = #{repairId}
+  </delete>
+
+</mapper>

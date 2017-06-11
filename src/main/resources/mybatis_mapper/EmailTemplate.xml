@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.dormforce.nuis.support.dao.EmailTemplateDao">
+  <resultMap id="EmailTemplateMap" type="EmailTemplate">
+    <id column="email_template_id" jdbcType="INTEGER" property="emailTemplateId" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="subject" jdbcType="VARCHAR" property="subject" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+  </resultMap>
+
+  <select id="findEmailTemplates" resultType="EmailTemplate" resultMap="EmailTemplateMap">
+    SELECT * FROM email_template
+  </select>
+
+  <select id="findEmailTemplate" parameterType="Integer" resultType="EmailTemplate" resultMap="EmailTemplateMap">
+    SELECT * FROM email_template WHERE email_template_id = #{id}
+
+  </select>
+
+  <insert id="addEmailTemplate" parameterType="EmailTemplate">
+    <selectKey keyProperty="emailTemplateId" resultType="int" order="BEFORE">
+      SELECT MAX(email_template_id)+1 FROM email_template
+    </selectKey>
+    INSERT INTO email_template (email_template_id,type,subject,title)
+    VALUE (#{emailTemplateId},#{type},#{subject},#{title})
+  </insert>
+
+  <update id="updateEmailTemplate" parameterType="EmailTemplate">
+    UPDATE email_template SET type = #{type},subject = #{subject},title = #{title}
+    WHERE email_template_id = #{emailTemplateId}
+</update>
+
+  <delete id="deleteEmailTemplate" parameterType="Integer">
+    DELETE FROM email_template WHERE email_template_id = #{id}
+  </delete>
+
+</mapper>

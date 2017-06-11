@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.dormforce.nuis.support.dao.AnnouncementDao">
+    <resultMap id="announcementMap" type="Announcement">
+        <id column="announcement_id" jdbcType="INTEGER" property="announcementId"/>
+        <result column="type" jdbcType="VARCHAR" property="type"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="subject" jdbcType="VARCHAR" property="subject"/>
+        <result column="rel_users" jdbcType="VARCHAR" property="relUsers"/>
+        <result column="status" jdbcType="VARCHAR" property="status"/>
+        <result column="create_time" jdbcType="VARCHAR" property="createTime"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
+    </resultMap>
+
+    <select id="findAnnoucements" resultType="Announcement" resultMap="announcementMap">
+      SELECT * FROM announcement
+  </select>
+
+    <select id="findAnnouncement" parameterType="Integer" resultType="Announcement" resultMap="announcementMap">
+      SELECT * FROM announcement WHERE announcement_id = #{id}
+  </select>
+
+    <insert id="addAnnouncement" parameterType="Announcement">
+      <selectKey resultType="int" keyProperty="announcementId" order="BEFORE">
+          SELECT MAX(announcement_id)+1 FROM announcement
+      </selectKey>
+      INSERT INTO announcement (announcement_Id,type,title,subject,rel_users,status,create_time,user_id)
+      VALUE (#{announcementId},#{type},#{title},#{subject},#{relUsers},#{status},#{createTime},#{userId})
+  </insert>
+
+    <update id="updateAnnouncement" parameterType="Announcement">
+      UPDATE announcement set type = #{type},title = #{title},subject = #{subject},
+          rel_users = #{relUsers},status = #{status},create_time = #{createTime},user_id = #{userId}
+          WHERE announcement_id = #{announcementId}
+  </update>
+
+    <delete id="deleteAnnouncement" parameterType="Integer">
+      DELETE FROM announcement WHERE announcement_id = #{id}
+  </delete>
+</mapper>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.dormforce.nuis.support.dao.MeetingMinutesDao">
+  <resultMap id="meetingMinutesMap" type="MeetingMinutes">
+    <id column="meeting_minutes_id" jdbcType="INTEGER" property="meetingMinutesId" />
+    <result column="dept_id" jdbcType="VARCHAR" property="deptId" />
+    <result column="subject" jdbcType="VARCHAR" property="subject" />
+    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+  </resultMap>
+
+  <select id="findMeetingMinutesById" resultMap="meetingMinutesMap">
+      SELECT * FROM meeting_minutes WHERE meeting_minutes_id = #{meetingMinutesId}
+  </select>
+  
+  <select id="findMeetingMinutes" resultType="MeetingMinutes" resultMap="meetingMinutesMap">
+      SELECT * FROM meeting_minutes
+  </select>
+
+  <insert id="addMeetingMinutes" parameterType="MeetingMinutes">
+    <selectKey keyProperty="meetingMinutesId" resultType="int" order="BEFORE">
+      SELECT MAX(meeting_Minutes_Id)+1 FROM meeting_minutes
+    </selectKey>
+      INSERT INTO meeting_minutes (meeting_minutes_id,dept_id,subject,create_time,user_id)
+      VALUE (#{meetingMinutesId},#{deptId},#{subject},#{createTime},#{userId})
+  </insert>
+  
+  <update id="updateMeetingMinutes" parameterType="MeetingMinutes">
+      UPDATE meeting_minutes SET dept_id = #{deptId},subject = #{subject},create_time = #{createTime},user_id = #{userId}
+      WHERE meeting_minutes_id = #{meetingMinutesId}
+  </update>
+
+  <delete id="deleteMeetingMinutes">
+      DELETE FROM meeting_minutes WHERE meeting_minutes_id = #{meetingMinutesId}
+  </delete>
+</mapper>

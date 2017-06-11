@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.dormforce.nuis.support.dao.WeeklyReportDao">
+  <resultMap id="weeklyReportMap" type="WeeklyReport">
+    <id column="weekly_report_id" jdbcType="INTEGER" property="weeklyReportId" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="subject" jdbcType="VARCHAR" property="subject" />
+    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="trainee_id" jdbcType="INTEGER" property="traineeId" />
+  </resultMap>
+
+  <select id="findWeeklyReports" resultMap="weeklyReportMap">
+    SELECT * FROM weekly_report
+  </select>
+
+  <select id="findWeeklyReportById" resultMap="weeklyReportMap">
+    SELECT * FROM weekly_report WHERE weekly_report_id = #{weeklyReportId}
+  </select>
+
+  <select id="findWeeklyReportsByTid" resultMap="weeklyReportMap">
+    SELECT * FROM weekly_report WHERE trainee_id = #{traineeId}
+  </select>
+
+  <insert id="addWeeklyReport">
+    <selectKey keyProperty="weeklyReportId" resultType="int" order="BEFORE">
+      SELECT MAX(weekly_report_id)+1 FROM weekly_report
+    </selectKey>
+    INSERT INTO weekly_report (weekly_report_id,title,subject,create_time,status,trainee_id)
+    VALUE (#{weeklyReportId},#{title},#{subject},#{createTime},#{status},#{traineeId})
+
+  </insert>
+
+  <update id="updateWeeklyReport">
+    UPDATE weekly_report SET title = #{title},subject = #{subject},create_time = #{createTime},
+    status = #{status},trainee_id = #{traineeId} WHERE weekly_report_id = #{weeklyReportId}
+  </update>
+
+  <delete id="deleteWeeklyReport">
+    DELETE FROM weekly_report WHERE weekly_report_id = #{weeklyReportId}
+  </delete>
+
+</mapper>

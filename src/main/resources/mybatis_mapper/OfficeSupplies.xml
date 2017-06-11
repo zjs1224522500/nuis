@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.dormforce.nuis.support.dao.OfficeSuppliesDao">
+  <resultMap id="officeSuppliesMap" type="OfficeSupplies">
+    <id column="office_supplies_id" jdbcType="INTEGER" property="officeSuppliesId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+  </resultMap>
+
+  <select id="findOfficeSuppliesList" resultType="OfficeSupplies" resultMap="officeSuppliesMap">
+      SELECT * FROM office_supplies
+  </select>
+
+  <select id="findOfficeSuppliesById" resultMap="officeSuppliesMap">
+      SELECT * FROM office_supplies WHERE office_supplies_id = #{officeSuppliesId}
+  </select>
+
+  <select id="findOfficeSuppliesByName" resultType="OfficeSupplies" resultMap="officeSuppliesMap">
+      SELECT * FROM office_supplies WHERE name LIKE #{name}
+  </select>
+
+  <select id="findOfficeSuppliesByType" resultType="OfficeSupplies" resultMap="officeSuppliesMap">
+      SELECT * FROM office_supplies WHERE type = #{type}
+  </select>
+
+  <select id="findOfficeSuppliesByDesc" resultType="OfficeSupplies" resultMap="officeSuppliesMap">
+      SELECT * FROM office_supplies WHERE description LIKE #{description}
+  </select>
+
+  <insert id="addOfficeSupplies" parameterType="OfficeSupplies">
+    <selectKey keyProperty="officeSuppliesId" resultType="int" order="BEFORE">
+      SELECT MAX(office_supplies_id)+1 FROM office_supplies
+    </selectKey>
+    INSERT INTO office_supplies (office_supplies_id,name,type,description,create_time,status)
+    VALUE (#{officeSuppliesId},#{name},#{type},#{description},#{createTime},#{status})
+  </insert>
+
+  <update id="updateOfficeSupplies" parameterType="OfficeSupplies">
+      UPDATE office_supplies SET office_supplies_id = #{officeSuppliesId},name = #{name},
+        type = #{type},description = #{description},create_time = #{createTime},status = #{status}
+  </update>
+
+  <delete id="deleteOfficeSupplies">
+      DELETE FROM office_supplies WHERE office_supplies_id = #{officeSuppliesId}
+  </delete>
+
+  <insert id="addOfficeSuppliesByList" parameterType="java.util.List">
+      INSERT INTO office_supplies (office_supplies_id,name,type,description,create_time,status)
+      VALUE
+      <foreach collection="list" item="item" index="index" separator=",">
+        (#{item.officeSuppliesId},#{item.name},#{item.type},#{item.description},#{item.createTime},#{item.status})
+      </foreach>
+  </insert>
+
+</mapper>

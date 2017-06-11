@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.dormforce.nuis.support.dao.WeeklyWorkDao">
+  <resultMap id="weeklyWorkMap" type="WeeklyWork">
+    <id column="weekly_work_id" jdbcType="INTEGER" property="weeklyWorkId" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="subject" jdbcType="VARCHAR" property="subject" />
+    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="score" jdbcType="VARCHAR" property="score" />
+    <result column="manager_id" jdbcType="INTEGER" property="managerId" />
+    <result column="trainee_id" jdbcType="INTEGER" property="traineeId" />
+  </resultMap>
+
+  <select id="findWeeklyWorks" resultMap="weeklyWorkMap">
+    SELECT * FROM weekly_work
+  </select>
+
+  <select id="findWeeklyWorkById" resultMap="weeklyWorkMap">
+    SELECT * FROM weekly_work WHERE weekly_work_id = #{weeklyWorkId}
+  </select>
+
+  <select id="findWeeklyWorkByMId" resultMap="weeklyWorkMap">
+    SELECT * FROM weekly_work WHERE manager_id = #{managerId}
+  </select>
+
+  <select id="findWeeklyWorkByTId" resultMap="weeklyWorkMap">
+    SELECT * FROM weekly_work WHERE trainee_id = #{traineeId}
+  </select>
+
+  <insert id="addWeeklyWork">
+    <selectKey keyProperty="weeklyWorkId" resultType="int" order="BEFORE">
+      SELECT MAX(weekly_work_id)+1 FROM weekly_work
+    </selectKey>
+    INSERT INTO weekly_work (weekly_work_id,type,title,subject,create_time,status,score,manager_id,trainee_id)
+    VALUE (#{weeklyWorkId},#{type},#{title},#{subject},#{createTime},#{status},#{score},#{managerId},#{traineeId})
+  </insert>
+
+  <update id="updateWeeklyWork">
+    UPDATE weekly_work SET type = #{type},title = #{title},subject = #{subject},create_time = #{createTime},
+    status = #{status},score = #{score},manager_id = #{managerId},trainee_id = #{traineeId}
+    WHERE weekly_work_id = #{weeklyWorkId}
+  </update>
+
+  <delete id="deleteWeeklyWork">
+    DELETE FROM weekly_work WHERE weekly_work_id = #{weeklyWorkId}
+  </delete>
+
+</mapper>

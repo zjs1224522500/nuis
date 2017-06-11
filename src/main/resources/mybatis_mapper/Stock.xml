@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.dormforce.nuis.support.dao.StockDao">
+  <resultMap id="stockMap" type="Stock">
+    <id column="stock_id" jdbcType="INTEGER" property="stockId" />
+    <result column="total_count" jdbcType="VARCHAR" property="totalCount" />
+    <result column="surplus" jdbcType="VARCHAR" property="surplus" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="office_supplies_id" jdbcType="INTEGER" property="officeSuppliesId" />
+  </resultMap>
+
+  <select id="findStocks" resultMap="stockMap">
+      SELECT * FROM stock
+  </select>
+
+  <select id="findStockById" resultMap="stockMap">
+      SELECT * FROM stock WHERE stock_id = #{stockId}
+  </select>
+
+  <select id="findStockBySuppliesId" resultMap="stockMap">
+      SELECT * FROM stock WHERE office_supplies_id = #{officeSuppliesId}
+  </select>
+
+  <insert id="addStock">
+    <selectKey keyProperty="stockId" resultType="int" order="BEFORE">
+      SELECT MAX(stock_id)+1 FROM stock
+    </selectKey>
+      INSERT INTO stock (stock_id,total_count,surplus,status,office_supplies_id)
+      VALUE (#{stockId},#{totalCount},#{surplus},#{status},#{officeSuppliesId})
+  </insert>
+
+  <update id="updateStock">
+    UPDATE stock SET total_count = #{totalCount},surplus = #{surplus},status = #{status}
+    WHERE office_supplies_id = #{officeSuppliesId}
+  </update>
+
+  <delete id="deleteStock">
+    DELETE FROM stock WHERE stock_id = #{stockId}
+  </delete>
+
+</mapper>

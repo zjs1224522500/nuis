@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.dormforce.nuis.support.dao.UserDao">
+  <resultMap id="userMap" type="User">
+    <id column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="telephone" jdbcType="VARCHAR" property="telephone" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="dept_id" jdbcType="VARCHAR" property="deptId" />
+    <result column="is_manager" jdbcType="VARCHAR" property="isManager" />
+  </resultMap>
+
+  <select id="findUsers" resultType="User" resultMap="userMap">
+    SELECT * FROM user
+  </select>
+
+  <select id="findUserById" parameterType="Integer" resultType="User" resultMap="userMap">
+    SELECT * FROM user WHERE user_id = #{id}
+  </select>
+
+  <select id="findUserByName" resultType="User" resultMap="userMap">
+    SELECT * FROM user WHERE name = #{name}
+  </select>
+
+  <select id="findUsersByDept" resultType="User" resultMap="userMap">
+    SELECT * FROM user WHERE dept_id = #{deptId}
+  </select>
+
+  <insert id="importUsers" parameterType="java.util.List">
+    INSERT INTO user (user_id,name,telephone,email,dept_id,is_manager)
+    VALUES
+    <foreach collection="list" item="user" index="index" separator=",">
+      (#{user.userId},#{user.name},#{user.telephone},#{user.email},#{user.deptId},#{user.isManager})
+    </foreach>
+  </insert>
+
+  <insert id="addUser" parameterType="User">
+    <selectKey keyProperty="userId" resultType="int" order="BEFORE">
+      SELECT MAX(user_id)+1 FROM user
+    </selectKey>
+    INSERT INTO user (user_id,name,telephone,email,dept_id,is_manager)
+    VALUE (#{userId},#{name},#{telephone},#{email},#{deptId},#{isManager})
+  </insert>
+
+  <update id="updateUser" parameterType="User">
+    UPDATE user SET name = #{name},telephone = #{telephone},email = #{email},
+            dept_Id = #{deptId},is_manager = #{isManager}
+            WHERE user_id = #{userId}
+  </update>
+
+  <delete id="deleteUser" parameterType="Integer">
+    DELETE FROM user WHERE user_id = #{userId}
+  </delete>
+
+</mapper>

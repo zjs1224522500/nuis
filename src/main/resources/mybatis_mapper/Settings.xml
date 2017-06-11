@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.dormforce.nuis.support.dao.SettingsDao">
+  <resultMap id="settingMap" type="Settings">
+    <id column="settings_code" jdbcType="INTEGER" property="settingsCode" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="value" jdbcType="VARCHAR" property="value" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+  </resultMap>
+
+  <select id="findAllSettings" resultType="Settings" resultMap="settingMap">
+      SELECT * FROM settings
+  </select>
+
+  <select id="findSettingByCode" resultMap="settingMap">
+      SELECT * FROM settings WHERE settings_code = #{settingsCode}
+  </select>
+
+  <insert id="addSettings">
+      INSERT INTO settings (settings_code,type,name,value,status)
+      VALUE (#{settingsCode},#{type},#{name},#{value},#{status})
+  </insert>
+
+  <update id="updateSettings">
+      UPDATE settings SET type = #{type},name = #{name},value = #{value},status = #{status}
+      WHERE settings_code = #{settingsCode}  </update>
+
+  <delete id="deleteSettings">
+      DELETE FROM settings WHERE settings_code = #{settingsCode}
+  </delete>
+
+</mapper>

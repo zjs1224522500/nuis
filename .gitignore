@@ -1,0 +1,18 @@
+# IDEA配置文件
+*.iml
+.idea
+
+# 人工制品
+target
+*.class
+
+# 自定义的配置文件
+src/main/resources/settings.properties
+nuis-generator/src/main/resources/generatorConfig.xml
+
+# 第三方工具配置文件
+*.plist
+*.mwb.bak
+
+# 日志文件
+logs/

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.dormforce.nuis.support.dao.StatisticDao">
+  <resultMap id="statisticMap" type="Statistic">
+    <id column="statistic_id" jdbcType="INTEGER" property="statisticId" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="subject" jdbcType="VARCHAR" property="subject" />
+    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+  </resultMap>
+
+  <select id="findStatistic" resultMap="statisticMap">
+    SELECT * FROM statistic
+  </select>
+
+  <select id="findStatisticById" resultMap="statisticMap">
+    SELECT * FROM statistic WHERE statistic_id = #{statisticId}
+  </select>
+
+  <insert id="addStatistic">
+    <selectKey keyProperty="statisticId" resultType="int" order="BEFORE">
+      SELECT MAX(statistic_id)+1 FROM statistic
+    </selectKey>
+    INSERT INTO statistic (statistic_id,type,subject,create_time)
+    VALUE (#{statisticId},#{type},#{subject},#{createTime})
+  </insert>
+
+  <update id="updateStatistic">
+    UPDATE statistic SET type = #{type},subject = #{subject},
+    create_time = #{createTime} WHERE statistic_id = #{statisticId}
+  </update>
+
+  <delete id="deleteStatistic">
+    DELETE FROM statistic WHERE statistic_id = #{statisticId}
+  </delete>
+
+</mapper>
